@@ -92,7 +92,7 @@ async function handleRequest(request) {
 
 function handle(contents) {
     /** @type {string[]} words */
-    const words = contents.split(/([^A-Za-z']+)/);
+    const words = contents.replaceAll("’", "'").split(/([^A-Za-z']+)/);
     let goodWords = 0;
     let totalWords = 0;
     let msg = "";
