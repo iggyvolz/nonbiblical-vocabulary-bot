@@ -1,4 +1,4 @@
-# nonbiblical-vocabulary
-A simple parser script and accompanying webpage that answers whether or not "none of these words are in the bible".
+# nonbiblical-vocabulary-bot
+Discord bot for https://github.com/saintmarrow/nonbiblical-vocabulary
 
-copies of the bible are courtesy of [OpenBible](https://openbible.com)
+Invite Link: https://discord.com/api/oauth2/authorize?client_id=1208467186381881365&scope=applications.commands
