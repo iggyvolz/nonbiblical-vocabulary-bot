@@ -1,0 +1,4 @@
+name = "nonbiblical-vocabulary-bot"
+main = "index.js"
+workers_dev = true
+compatibility_date = "2024-02-17"
