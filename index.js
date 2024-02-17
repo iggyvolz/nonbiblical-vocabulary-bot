@@ -109,8 +109,6 @@ function handle(contents) {
             msg += word;
         }
     }
-    const numInBible = words.filter(x => x in bible).length;
-    const total = words.length;
-    const pct = Math.floor(numInBible * 10000 / (Math.max(1, total))) / 100;
-    return `${numInBible}/${total} (${pct}%) words from this message are in the bible: ${msg}`;
+    const pct = Math.floor(goodWords * 10000 / (Math.max(1, totalWords))) / 100;
+    return `${goodWords}/${totalWords} (${pct}%) words from this message are in the bible: ${msg}`;
 }
