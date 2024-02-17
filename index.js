@@ -1,4 +1,4 @@
-import {KJV_dict} from "./parsed/kjv";
+import {KJV_dict as bible} from "./parsed/kjv";
 
 const publicKey = "267a9531fc05d9862b1351bcd7db72548e6c7d5177236341f70baac3f4341024";
 addEventListener('fetch', event => {
@@ -76,21 +76,11 @@ async function handleRequest(request) {
         })
     }
     const contents = Object.entries(body.data.resolved.messages)[0][1].content.replaceAll("[^a-zA-Z0-9- \s]", "");
-    const words = contents.split(/\s/).map(x => x.toLowerCase());
-    const formatted = words.map(x => {
-        if(x in KJV_dict) {
-            return `**${x}**`;
-        } else {
-            return x;
-        }
-    }).join(" ");
-    const numInBible = words.filter(x => x in KJV_dict).length;
-    const total = words.length;
-    const pct = Math.floor(numInBible * 10000 / (Math.max(1, total))) / 100;
+
     return new Response(JSON.stringify({
         "type": 4,
         "data": {
-            "content": `${numInBible}/${total} (${pct}%) words from this message are in the bible: ${formatted}`,
+            "content": handle(contents),
             "allowed_mentions": {"parse": []}
         }
     }), {
@@ -98,4 +88,29 @@ async function handleRequest(request) {
             "Content-Type": "application/json"
         }
     })
+}
+
+function handle(contents) {
+    /** @type {string[]} words */
+    const words = contents.split(/([^A-Za-z']+)/);
+    let goodWords = 0;
+    let totalWords = 0;
+    let msg = "";
+    for(const word of words) {
+        if(/([A-Za-z']+)/.test(word)) {
+            totalWords++;
+            if(word.toLowerCase() in bible) {
+                goodWords++;
+                msg += `**${word}**`;
+            } else {
+                msg += `~~${word}~~`;
+            }
+        } else {
+            msg += word;
+        }
+    }
+    const numInBible = words.filter(x => x in bible).length;
+    const total = words.length;
+    const pct = Math.floor(numInBible * 10000 / (Math.max(1, total))) / 100;
+    return `${numInBible}/${total} (${pct}%) words from this message are in the bible: ${msg}`;
 }
